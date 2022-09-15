@@ -1,0 +1,148 @@
+kubernetes
+----------
+Kubernetes is a portable, extensible, open source platform for managing containerized workloads and services, 
+that facilitates both declarative configuration and automation.
+
+
+Why you need Kubernetes and what it can do
+------------------------------------------
+need to manage the containers that run the applications and ensure that there is no downtime. 
+For example, if a container goes down, another container needs to start.
+
+Kubernetes provides you with a framework to run distributed systems resiliently. 
+It takes care of scaling and failover for your application, provides deployment patterns, and more. 
+For example, Kubernetes can easily manage a canary deployment for your system.
+
+
+Kubernetes Cluster
+------------------
+A Kubernetes cluster is a set of node machines for running containerized applications. 
+If youre running Kubernetes, youre running a cluster. 
+At a minimum, a cluster contains a control plane and one or more compute machines, or nodes. 
+The control plane is responsible for maintaining the desired state of the cluster, 
+such as which applications are running and which container images they use.
+
+
+Kubernetes Architecture
+-----------------------
+ETCD Cluster
+============
+ETCD is a database that stores information in the form of a key-value format. It’s mainly used for shared configuration
+
+Kube Scheduler
+==============
+the scheduler schedules the work to different worker nodes. 
+It has the resource usage information for each worker node. 
+The scheduler also considers the quality of service requirements, data locality, and many other such parameters. 
+Then the scheduler schedules the work in terms of pods and services.
+
+Kube API Server
+===============
+The Kube API Server is the primary management component of the Kubernetes. 
+This is responsible for orchestrating all operations within the cluster. 
+It exposes the Kubernetes API, which external users use to perform management 
+operations on the cluster and the various controllers to monitor the state of the cluster and make necessary changes as required.
+
+Controller Manager
+==================
+The controller manager runs the following controller processes.
+
+Node Controller: The node controller takes care of nodes. 
+---------------- These are responsible for onboarding new nodes in the cluster, handling situations where nodes become 
+                 unavailable or get destroyed in the cluster.
+
+
+Replication Controller: The replication controller ensures that the desired number of containers are running at all time in the replication group.
+-----------------------
+
+Endpoints Controller: Populates the Endpoints object (that is, joins Services & Pods).
+---------------------
+
+Service Account & Token controllers: Create default accounts and API access tokens for new namespaces
+------------------------------------
+
+
+Cloud Controller Manager
+========================
+Cloud controller manager runs controllers that interact with the underlying cloud providers. 
+It would be best if you disabled these controller loops in the Kube controller manager.
+
+As with the Kube-controller-manager, 
+the cloud-controller-manager combines several logically independent control loops into a single binary that you run as a single process.
+
+The following controllers can have cloud provider dependencies
+
+Node controller: For checking the cloud provider to determine if a node has been deleted in the cloud after it stops responding.
+----------------
+
+Route controller: For setting up routes in the underlying cloud infrastructure.
+-----------------
+
+Service controller: For creating, updating and deleting cloud provider load balancers.
+-------------------
+
+
+Worker/Slave nodes
+===================
+A worker node is a virtual or physical server that runs the applications and is controlled by the master node. 
+The pods are scheduled on the worker nodes, which have the necessary tools to run and connect them.
+
+And to access the applications from the external world, you have to connect to the worker nodes and not the master nodes.
+
+
+Container Runtime
+=================
+The container runtime is the software that is responsible for running containers. 
+Kubernetes supports several container runtimes: Docker, containerd, cri-o, rktlet, and any implementation of the Kubernetes CRI (Container Runtime Interface).
+
+So we need the docker or its supported equivalent install on all the nodes in the cluster, including the master.
+
+
+Kubelet
+=======
+Kubelet is an agent that runs on each worker node and communicates with the master node. 
+So, if you have 5 worker nodes, then kubelet runs on each worker node.
+
+It listens for instructions from Kube API Server and deploys or destroys the containers on the nodes. 
+The Kube API Server periodically fetches status reports from the kubelet to monitor the state of the node or containers.
+
+
+Kube-proxy
+==========
+Kube proxy is a proxy service that runs on each node and helps make services available to the external host. 
+It helps in forwarding the request to correct containers and is capable of performing primitive load balancing
+
+Kuber-proxy maintains network rules on nodes. These network rules allow 
+network communication to your Pods from network sessions inside or outside of your cluster.
+
+PODS
+====
+Pods are one of the crucial concepts in Kubernetes, as they are the key construct that developers interact with.
+
+A pod is a group of one or more containers that logically go together. 
+Pods run on nodes. Pods run together as a logical unit. So they have the same shared content. 
+They all share the same IP address but can reach other Pods via localhost, as well as shared storage.
+
+
+Kubectl
+========
+Kubernetes provides a command line tool for communicating with a Kubernetes cluster's control plane, using the Kubernetes API.
+
+
+
+
+Different Deployment Stratergies
+================================
+recreate: terminate the old version and release the new one.
+
+ramped: release a new version on a rolling update fashion, one after the other.
+
+blue/green: release a new version alongside the old version then switch traffic.(amazon great indian festival)
+
+canary: release a new version to a subset of users, then proceed to a full rollout 
+        (hdfc bank for some android users for transcation can be done using fingerprint unlock but samsung galaxy we can do with face ID)
+
+a/b testing: release a new version to a subset of users in a precise way (HTTP headers, cookie, weight, etc.).  (windows 11)
+             A/B testing is really a technique for making business decisions based on statistics but we will briefly describe the process. 
+             This doesn’t come out of the box with Kubernetes, it implies extra work to 
+             setup a more advanced infrastructure (Istio, Linkerd, Traefik, custom nginx/haproxy, etc).

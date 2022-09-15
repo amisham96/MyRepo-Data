@@ -1,0 +1,43 @@
+
+
+mvn clean verify sonar:sonar -Dsonar.projectKey=chatapp -Dsonar.host.url=http://20.25.32.138:9000 -Dsonar.login=sqa_18aea13feb197b15496e868907392520555cad06
+
+
+docker run -d --name sonarqube -p 9000:9000 -p 9092:9092 -v sonarqube-conf:/opt/sonarqube/conf -v sonarqube-data:/opt/sonarqube/data -v sonarqube-logs:/opt/sonarqube/logs -v sonarqube-extensions:/opt/sonarqube/extensions sonarqube
+
+
+
+ansible all -m ping
+
+ansible db -m ping
+
+ansible web -m ping
+
+ansible client -m ping
+
+ansible client -m command -a uptime
+
+ansible client -m command -a "df -h"
+
+ansible client -m command -a "free -m"
+
+ansible client -m command -a "ls -la"
+
+ansible client -m group -a "name=weblogic state=present"
+
+ansible client -m group -a "name=weblogic state=present"
+
+ansible client -m user -a "name=weblogic group=weblogic createhome=yes"
+
+ansible client -m file -a "path=/tmp/x state=directory mode=0755"
+
+ansible client -m file -a "path=/tmp/x group=weblogic owner=weblogic"
+
+
+
+https://github.com/amisham96/ansible-roles-nginx.git
+
+https://github.com/amisham96/ansible-roles-tomcat.git
+
+https://github.com/amisham96/Ansible-tomcat-install-playbook.git
+

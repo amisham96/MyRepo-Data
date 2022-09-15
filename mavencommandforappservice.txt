@@ -1,0 +1,14 @@
+
+ls
+
+cd ./springboot-chat-app/
+
+
+cd ./springboot-chat-app/
+
+
+mvn com.microsoft.azure:azure-webapp-maven-plugin:2.5.0:config
+
+
+mvn package azure-webapp:deploy
+

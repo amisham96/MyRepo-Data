@@ -1,0 +1,12 @@
+date_format=`date +%Y_%m_%d:%H:%M:%S`
+sudo cp /etc/ssh/sshd_config /etc/ssh/sshd_config_$date_format
+sudo echo "Port 2222" >> /etc/ssh/sshd_config
+sudo firewall-cmd --add-port=2222/tcp --permanent
+sudo firewall-cmd --reload
+sudo firewall-cmd --remove-service=ssh --permanent
+sudo firewall-cmd --reload
+sudo echo "Port 2222" >> /etc/ssh/sshd_config
+sudo semanage port -a -t ssh_port_t -p tcp 2222
+sudo systemctl restart sshd
+
+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

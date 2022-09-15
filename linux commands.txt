@@ -1,0 +1,85 @@
+   27  wget https://dlcdn.apache.org/maven/maven-3/3.8.5/binaries/apache-maven-3.8.5-bin.tar.gz
+
+   28  ls
+
+   29  ln -s apache-maven-3.8.5-bin.tar.gz maven.tar.gz
+
+   30  ls
+
+   32  tar -zxvf maven.tar.gz
+
+   38  touch testfile.txt
+
+   39  ln -s testfile.txt linkfile.txt
+
+   40  ls
+
+   41  ls -l linkfile.txt
+
+   42  rm linkfile.txt
+
+   43  unlink linkfile.txt
+
+   44  ls
+
+   
+===========================================================
+
+   50  chmod 777 testfile.txt
+
+   51  ls -la
+
+   52  chmod 700 testfile.txt
+
+   53  ls -la
+
+   54  chmod g=x testfile.txt
+
+   55  ls -la
+
+   56  chmod og= testfile.txt
+
+   57  ls -la
+
+   58  chmod u=rw,g=r,o= testfile.txt
+
+   59  ls -la
+
+   60  history
+
+=======================================================
+
+   63  adduser jerry
+
+   64  groupadd jenkins
+
+   66  usermod -G jenkins jerry
+
+   67  cat /etc/group
+
+   69  groupadd docker
+
+   70  usermod -G jenkins,docker jerry
+
+   71  cat /etc/group
+
+   72  gpasswd -d jerry docker
+
+========================================================
+
+[10:46 AM] Gopal-Trainer (Guest)
+ 234  ip a
+
+[10:46 AM] Gopal-Trainer (Guest)
+ 239  for i in 10.0.0.4;do echo os version $i;cat /etc/redhat-release;done
+
+[10:50 AM] Gopal-Trainer (Guest)
+ 242  for i in 10.0.0.4;do echo Memory Status $i;free -g;done
+
+  243  for i in 10.0.0.4;do echo kernal version $i;uname -r;done
+
+[10:51 AM] Gopal-Trainer (Guest)
+ 247  for i in 10.0.0.4;do echo kernal version $i;sestatus;done
+
+
+

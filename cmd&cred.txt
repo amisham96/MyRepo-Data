@@ -1,0 +1,101 @@
+Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
+
+
+terraform fmt
+
+terraform plan
+
+az login
+
+az account list
+
+az ad sp create-for-rbac --role="Contributor" --scopes="/subscriptions/a6aa0d59-f3a1-41a0-b557-0d0a2181540"
+
+az ad sp create-for-rbac --role="Contributor" --scopes="/subscriptions/b4fd38ca-930c-4e35-a642-d7f7075f428e"
+
+az logout
+
+az login
+
+Azure Cred
+=====================
+gopal1409@gmail.com
+
+SBSGQ$92567
+
+
+
+
+
+
+   1 mkdir ssh-keys
+   2 cd .\ssh-keys\
+   3 ssh-keygen -m PEM -t rsa -b 4096 -C "azureuser@myserver" -f terraform-azure.pem
+   4 ls
+   5 mv .\terraform-azure.pem.pub .\terraform-azure.pub
+
+
+
+
+{
+  "appId": "d7400eae-a48a-4710-9256-d5f16cc12437",
+  "displayName": "azure-cli-2022-07-10-03-48-34",
+  "name": "d7400eae-a48a-4710-9256-d5f16cc12437",
+  "password": "EOzYwgqbkZVLtawjvfF5qYXk.f3EdZUrbS",
+  "tenant": "961e4a55-c338-498d-a310-544a2b8c027e"
+
+
+
+az login --service-principal -u d7400eae-a48a-4710-9256-d5f16cc12437 -p EOzYwgqbkZVLtawj
+vfF5qYXk.f3EdZUrbS --tenant 961e4a55-c338-498d-a310-544a2b8c027e
+
+
+
+export TF_VAR_client_id="d7400eae-a48a-4710-9256-d5f16cc12437"
+export TF_VAR_client_secret="EOzYwgqbkZVLtawjvfF5qYXk.f3EdZUrbS"
+export TF_VAR_subs_id="b4fd38ca-930c-4e35-a642-d7f7075f428e"
+export TF_VAR_tenant_id="961e4a55-c338-498d-a310-544a2b8c027e"
+
+
+
+withCredentials([azureServicePrincipal(credentialsId: 'azure-cred', subscriptionIdVariable: 'SUBS_ID', clientIdVariable: 'CLIENT_ID', clientSecretVariable: 'CLIENT_SECRET', tenantIdVariable: 'TENANT_ID')]) {
+                         sh 'az login --service-principal -u $CLIENT_ID -p $CLIENT_SECRET -t $TENANT_ID'
+                         sh 'terraform init'
+                         sh 'terraform plan'
+                    }
+
+
+$ApplicationId="d7400eae-a48a-4710-9256-d5f16cc12437"
+$SecuredPassword="EOzYwgqbkZVLtawjvfF5qYXk.f3EdZUrbS"
+$TenantId="961e4a55-c338-498d-a310-544a2b8c027e"
+$Credential = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList $ApplicationId, $SecuredPassword
+Connect-AzAccount -ServicePrincipal -TenantId $TenantId -Credential $Credential
+
+
+
+stage('Deploy aks with terraform') {
+            steps {
+                script {
+                    withCredentials([azureServicePrincipal(credentialsId: 'azure-cred', subscriptionIdVariable: 'SUBS_ID', clientIdVariable: 'CLIENT_ID', clientSecretVariable: 'CLIENT_SECRET', tenantIdVariable: 'TENANT_ID')]) {
+                         sh 'az login --service-principal -u $CLIENT_ID -p $CLIENT_SECRET -t $TENANT_ID'
+                         sh 'terraform init'
+                         sh 'terraform plan -var client_id=$CLIENT_ID -var client_secret=$CLIENT_SECRET -var subs_id=$SUBS_ID -var tenant_id=$TENANT_ID'
+                         sh 'terraform apply --auto-approve -var client_id=$CLIENT_ID -var client_secret=$CLIENT_SECRET -var subs_id=$SUBS_ID -var tenant_id=$TENANT_ID'
+                    }
+                }
+            }
+        }
+
+
+
+
+
+
+sudo -i
+  1  apt-get update
+    2  apt install default-jdk
+    3  curl -fsSL https://pkg.jenkins.io/debian-stable/jenkins.io.key | sudo tee   /usr/share/keyrings/jenkins-keyring.asc > /dev/null
+    4  echo deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc]   https://pkg.jenkins.io/debian-stable binary/ | sudo tee   /etc/apt/sources.list.d/jenkins.list > /dev/null
+    5  sudo apt-get update
+    6  sudo apt-get install jenkins
+    7  systemctl status jenkins

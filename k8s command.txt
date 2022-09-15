@@ -1,0 +1,197 @@
+###how to install containerd
+ 5  apt update
+    6  apt-get install     ca-certificates     curl     gnupg     lsb-release
+    7  sudo mkdir -p /etc/apt/keyrings
+    8  curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+    9  echo   "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+   10  sudo apt-get update
+   11  sudo apt-get install containerd.io
+   12  systemctl status containerd
+#delete one file
+rm /etc/containerd/config.toml
+#install kubernetes
+
+   14  cat <<EOF | sudo tee /etc/modules-load.d/k8s.conf
+overlay
+br_netfilter
+EOF
+
+   15  sudo modprobe overlay
+   16  sudo modprobe br_netfilter
+   17  cat <<EOF | sudo tee /etc/sysctl.d/k8s.conf
+net.bridge.bridge-nf-call-iptables  = 1
+net.bridge.bridge-nf-call-ip6tables = 1
+net.ipv4.ip_forward                 = 1
+EOF
+
+   18  sudo sysctl --system
+   19  sudo apt-get update
+   20  sudo apt-get install -y apt-transport-https ca-certificates curl
+   21  sudo curl -fsSLo /usr/share/keyrings/kubernetes-archive-keyring.gpg https://packages.cloud.google.com/apt/doc/apt-key.gpg
+   22  echo "deb [signed-by=/usr/share/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee /etc/apt/sources.list.d/kubernetes.list
+   23  sudo curl -fsSLo /usr/share/keyrings/kubernetes-archive-keyring.gpg https://packages.cloud.google.com/apt/doc/apt-key.gpg
+   24  sudo apt-get update
+   25  sudo apt-get install -y kubelet kubeadm kubectl
+   ###run for network
+   kubectl apply -f https://github.com/coreos/flannel/raw/master/Documentation/kube-flannel.yml
+
+
+#master configuration. 
+
+kubeadm init --pod-network-cidr=192.168.0.0/16
+ mkdir -p $HOME/.kube
+  sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+  sudo chown $(id -u):$(id -g) $HOME/.kube/config
+#install the calico plugin
+kubectl create -f https://projectcalico.docs.tigera.io/manifests/tigera-operator.yaml
+kubectl create -f https://projectcalico.docs.tigera.io/manifests/custom-resources.yaml
+watch kubectl get pods -n calico-system
+systemctl restart containerd
+kubectl get nodes
+kubectl get pod --all-namespaces
+#worker config
+just copy paste the join command
+#sometime we add another node . 
+kubeadm token create --print-join-command
+#how to reset the kubernete cluster
+[10:37 AM] Gopal-Trainer (Guest)
+     90  kubeadm reset
+   91  rm -rf /etc/cni/net.d
+   92  rm -rf $HOME/.kube/config
+
+
+[10:27 AM] Gopal-Trainer (Guest)
+kubectl get pod --all-namespaces
+
+[10:30 AM] Gopal-Trainer (Guest)
+ 84  kubectl get nodes
+
+[10:30 AM] Gopal-Trainer (Guest)
+86  kubectl get pod --all-namespaces -o wide
+
+90  kubeadm reset
+   91  rm -rf /etc/cni/net.d
+   92  rm -rf $HOME/.kube/config
+
+
+
+Insall calic
+============
+
+mkdir -p $HOME/.kube
+sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+sudo chown $(id -u):$(id -g) $HOME/.kube/config
+
+
+
+
+
+Kubectl get: it will give you bief description of the api 
+
+Kubectl describe: it will give you more description about your api plus it will give you the event logs 
+
+Kubectl logs 
+
+Kubectl logs -f : floating logs 
+
+Kubectl delete 
+
+ 
+
+#we will deploy a container 
+
+#we will create a service and try to access the container.  
+
+ 128  kubectl get pod --all-namespaces 
+
+  129  kubectl run my-first-pod --image stacksimplify/kubenginx:1.0.0 
+
+  130  kubectl get pod 
+
+  131  kubectl describe pod 
+
+  132  kubectl get pod 
+
+  133  kubectl get pod my-first-pod 
+
+  134  kubectl describe pod my-first-pod 
+
+  135  history 
+
+  136  kubectl get pod -o wide 
+
+  137  clear 
+
+  138  kubectl get pod -o wide 
+
+  139  kubectl describe pod my-first-pod 
+
+  140  kubectl get pod 
+
+  141  kubectl get pod --all-namespaces 
+
+  142  clear 
+
+  143  kubectl get pod 
+
+  144  kubectl edit pod my-first-pod 
+
+  145  kubectl delete pod my-first-pod 
+
+  146  history 
+
+  147  kubectl get pod 
+
+  148  kubectl expose pod my-first-pod --type=NodePort --port=80 --name=my-first-service 
+
+  149  kubectl get svc 
+
+  150  history 
+
+kubectl expose pod candyshopapp-f79bdfd98-l26p8 --type=NodePort --port=8080 --name=candyshopapp "run pod as service"
+                                                                                                =====================
+
+
+  247  kubectl edit deploy myapp-deployment
+
+  248  kubectl set image deploy/myapp-deployment myapp-container=piuma/phpsysinfo
+
+  249  kubectl get deploy
+
+  250  kubectl rollout status deploy/myapp-deployment
+
+  251  kubectl get rs
+
+  252  kubectl describe deploy myapp-deployment
+
+
+  61   kubectl set image deploy/myapp-deployment myapp-container=nginx:1.16.1
+  262  kubectl set image deploy/myapp-deployment myapp-container=nginx:1.161
+  263  kubectl get deploy
+  264  kubectl get pod
+  265  kubectl describe pod myapp-deployment-5c977466b5-ktfw5
+
+  268  kubectl rollout history deploy/myapp-deployment
+  269  kubectl rollout undo deploy/myapp-deplyment
+  270  kubectl rollout undo deploy/myapp-deployment
+  271  kubectl get deploy
+  272  kubectl rollout undo deploy/myapp-deployment
+  273  kubectl get deploy
+  274  kubectl rollout undo deploy/myapp-deployment
+  275  kubectl rollout undo deploy/myapp-deployment --to-revision=2
+
+
+
+manual scaling
+--------------
+  280  kubectl get deploy
+  281  kubectl scale deploy/myapp-deployment --replicas=5
+  282  kubectl get pod
+
+
+autoscaling
+-----------
+  284  kubectl autoscale deploy/myapp-deployment --min=10 --max=15 --cpu-percent=80
+  285  kubectl get deploy
+  286  kubectl get pod
+

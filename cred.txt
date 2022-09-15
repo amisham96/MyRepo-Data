@@ -1,0 +1,35 @@
+secret    HqEoNRHL2z1+UIyXESRMPObV2l+tgM05ezsUwaSu
+
+access key   AKIAWA25PIMCNLP76QCY
+
+
+[
+  {
+    "cloudName": "AzureCloud",
+    "homeTenantId": "d52c9ea1-7c21-47b1-82a3-33a74b1f74b8",
+    "id": "64561c4f-5313-4030-befc-19210087fc04",
+    "isDefault": true,
+    "managedByTenants": [],
+    "name": "amisharm46@publicisgroupe.net",
+    "state": "Enabled",
+    "tenantId": "d52c9ea1-7c21-47b1-82a3-33a74b1f74b8",
+    "user": {
+      "name": "amisharm46@publicisgroupe.net",
+      "type": "user"
+    }
+  }
+]
+
+backend "s3" {
+    bucket = "mybucket-amit07"
+    key    = "mytfstate/"
+    region = "us-east-1"
+  }
+
+
+{
+  "appId": "a16d3426-e8e9-4a3b-88ad-bc72750dcfec",
+  "displayName": "azure-cli-2022-06-13-09-42-52",
+  "password": "DrX8Q~Wy7jY3USxo192~KgOFKGxEax~dQMa.hdoL",
+  "tenant": "961e4a55-c338-498d-a310-544a2b8c027e"
+}
