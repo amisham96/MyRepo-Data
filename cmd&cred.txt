@@ -17,15 +17,6 @@ az logout
 
 az login
 
-Azure Cred
-=====================
-gopal1409@gmail.com
-
-SBSGQ$92567
-
-
-
-
 
 
    1 mkdir ssh-keys
@@ -37,26 +28,6 @@ SBSGQ$92567
 
 
 
-{
-  "appId": "d7400eae-a48a-4710-9256-d5f16cc12437",
-  "displayName": "azure-cli-2022-07-10-03-48-34",
-  "name": "d7400eae-a48a-4710-9256-d5f16cc12437",
-  "password": "EOzYwgqbkZVLtawjvfF5qYXk.f3EdZUrbS",
-  "tenant": "961e4a55-c338-498d-a310-544a2b8c027e"
-
-
-
-az login --service-principal -u d7400eae-a48a-4710-9256-d5f16cc12437 -p EOzYwgqbkZVLtawj
-vfF5qYXk.f3EdZUrbS --tenant 961e4a55-c338-498d-a310-544a2b8c027e
-
-
-
-export TF_VAR_client_id="d7400eae-a48a-4710-9256-d5f16cc12437"
-export TF_VAR_client_secret="EOzYwgqbkZVLtawjvfF5qYXk.f3EdZUrbS"
-export TF_VAR_subs_id="b4fd38ca-930c-4e35-a642-d7f7075f428e"
-export TF_VAR_tenant_id="961e4a55-c338-498d-a310-544a2b8c027e"
-
-
 
 withCredentials([azureServicePrincipal(credentialsId: 'azure-cred', subscriptionIdVariable: 'SUBS_ID', clientIdVariable: 'CLIENT_ID', clientSecretVariable: 'CLIENT_SECRET', tenantIdVariable: 'TENANT_ID')]) {
                          sh 'az login --service-principal -u $CLIENT_ID -p $CLIENT_SECRET -t $TENANT_ID'
@@ -65,9 +36,7 @@ withCredentials([azureServicePrincipal(credentialsId: 'azure-cred', subscription
                     }
 
 
-$ApplicationId="d7400eae-a48a-4710-9256-d5f16cc12437"
-$SecuredPassword="EOzYwgqbkZVLtawjvfF5qYXk.f3EdZUrbS"
-$TenantId="961e4a55-c338-498d-a310-544a2b8c027e"
+
 $Credential = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList $ApplicationId, $SecuredPassword
 Connect-AzAccount -ServicePrincipal -TenantId $TenantId -Credential $Credential
 
